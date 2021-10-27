@@ -1,5 +1,5 @@
 [package]
-name = "HackAssembler"
+name = "hack_assembler"
 version = "0.1.0"
 authors = ["Eric McHugh <emmgame221@gmail.com>"]
 edition = "2018"
