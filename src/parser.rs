@@ -11,15 +11,23 @@ pub struct Parser {
     cur_dest: Option<String>,
     cur_comp: Option<String>,
     cur_jump: Option<String>,
+    debug_mode: bool,
 }
 
 impl Parser {
-    pub fn new(file: &mut File) -> Self {
+    pub fn new(file: &mut File, debug: bool) -> Self {
         let reader = BufReader::new(file);
         let lines = reader
             .lines()
             .map(|x| x.expect("Error while reading file").trim().to_string())
             .filter(|x| !x.starts_with("//") && !(x == "") && !(x == "\n"))
+            .map(|x| {
+                let comment = x.find("//");
+                match comment {
+                    Some(i) => x[0..i].trim().to_string(),
+                    None => x,
+                }
+            })
             .collect::<Vec<String>>();
         Parser {
             lines,
@@ -29,6 +37,7 @@ impl Parser {
             cur_dest: None,
             cur_comp: None,
             cur_jump: None,
+            debug_mode: debug,
         }
     }
 
@@ -38,6 +47,9 @@ impl Parser {
 
     pub fn advance(&mut self) {
         let line = &self.lines[self.cur_line];
+        if self.debug_mode {
+            println!("{}: {}", self.cur_line, line);
+        }
         if line.starts_with("@") {
             self.cur_com_type = CommandType::ACommand;
             self.cur_symbol = Some(line.strip_prefix("@").unwrap().to_string());
@@ -106,6 +118,15 @@ impl Parser {
 
     pub fn line_num(&self) -> usize {
         self.cur_line
+    }
+
+    pub fn reset(&mut self) {
+        self.cur_line = 0;
+        self.cur_com_type = CommandType::None;
+        self.cur_symbol = None;
+        self.cur_dest = None;
+        self.cur_comp = None;
+        self.cur_jump = None;
     }
 }
 
