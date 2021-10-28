@@ -7,7 +7,7 @@ mod code;
 const C_COM_PREF: u16 = 0b1110000000000000;
 
 fn main() {
-    let arg1 = match args().skip(1).next(){
+    let arg1 = match args().skip(1).next() {
         Some(s) => s,
         None => {
             println!("No argument provided.");
@@ -18,15 +18,22 @@ fn main() {
         println!("Please provide a .asm file for assembling.");
         return;
     }
-    let mut infile = OpenOptions::new().read(true).open(&arg1).expect(&format!("{} is not a valid file.", arg1));
+    let mut infile = OpenOptions::new()
+        .read(true)
+        .open(&arg1)
+        .expect(&format!("{} is not a valid file.", arg1));
     let mut parser = Parser::new(&mut infile);
     let outfile_name = arg1.strip_suffix(".asm").unwrap().to_string() + ".hack";
-    let mut outfile = OpenOptions::new().create(true).write(true).open(outfile_name).unwrap();
+    let mut outfile = OpenOptions::new()
+        .create(true)
+        .write(true)
+        .open(outfile_name)
+        .unwrap();
     while parser.has_more_commands() {
         parser.advance();
         match parser.command_type() {
             CommandType::ACommand => {
-                if let Ok(num)  = parser.symbol().unwrap().parse::<u16>() {
+                if let Ok(num) = parser.symbol().unwrap().parse::<u16>() {
                     writeln!(outfile, "{:016b}", num).unwrap();
                 } else {
                     todo!()

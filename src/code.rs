@@ -11,7 +11,7 @@ pub fn dest(mnem: &str) -> Result<u16, &'static str> {
         "AM" => Ok(0b101 << DEST_OFS),
         "AD" => Ok(0b110 << DEST_OFS),
         "AMD" => Ok(0b111 << DEST_OFS),
-        _ => Err("Invalid dest mnemonic")
+        _ => Err("Invalid dest mnemonic"),
     }
 }
 
@@ -45,7 +45,7 @@ pub fn comp(mnem: &str) -> Result<u16, &'static str> {
         "D&M" => Ok(0b1000000 << COMP_OFS),
         "D|A" => Ok(0b0010101 << COMP_OFS),
         "D|M" => Ok(0b1010101 << COMP_OFS),
-        _ => Err("Invalid comp mnemonic")
+        _ => Err("Invalid comp mnemonic"),
     }
 }
 
@@ -59,6 +59,6 @@ pub fn jump(mnem: &str) -> Result<u16, &'static str> {
         "JNE" => Ok(0b101),
         "JLE" => Ok(0b110),
         "JMP" => Ok(0b111),
-        _ => Err("Invalid jump mnemonic")
+        _ => Err("Invalid jump mnemonic"),
     }
 }
