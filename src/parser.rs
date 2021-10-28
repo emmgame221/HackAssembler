@@ -38,7 +38,6 @@ impl Parser {
 
     pub fn advance(&mut self) {
         let line = &self.lines[self.cur_line];
-        println!("{}: {}", self.cur_line, line);
         if line.starts_with("@") {
             self.cur_com_type = CommandType::ACommand;
             self.cur_symbol = Some(line.strip_prefix("@").unwrap().to_string());
